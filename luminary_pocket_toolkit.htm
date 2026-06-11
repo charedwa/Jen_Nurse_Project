@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Luminary Toolkit">
+<title>Luminary Hospice Pocket Toolkit</title>
+<meta name="theme-color" content="#1a5276">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a5276'/><text y='70' x='50' text-anchor='middle' font-size='55'>🏥</text></svg>">
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --primary: #1a5276;
+    --primary-light: #2e86c1;
+    --primary-pale: #d6eaf8;
+    --accent: #1a7a4a;
+    --accent-light: #27ae60;
+    --accent-pale: #d5f5e3;
+    --danger: #922b21;
+    --danger-pale: #fdecea;
+    --warning: #7d6608;
+    --warning-pale: #fef9e7;
+    --text: #1a202c;
+    --text-muted: #5a6a7a;
+    --border: #dde3ea;
+    --surface: #f5f8fb;
+    --white: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  .app-header {
+    background: var(--primary);
+    color: white;
+    padding: 16px 20px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .app-header .back-btn {
+    display: none;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .app-header.has-back .back-btn { display: flex; }
+  .header-text { flex: 1; min-width: 0; }
+  .app-header h1 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .app-header .subtitle {
+    font-size: 12px;
+    opacity: 0.75;
+    margin: 0;
+  }
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* SEARCH */
+  .search-bar {
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 22px;
+    font-size: 15px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+  }
+  .search-bar input:focus { border-color: var(--primary-light); background: white; }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    overflow-x: auto;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    padding: 0 8px;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    flex-shrink: 0;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    white-space: nowrap;
+  }
+  .nav-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+
+  /* MAIN CONTENT */
+  .main { padding: 0; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin: 12px 12px 0;
+    overflow: hidden;
+  }
+  .card:last-child { margin-bottom: 12px; }
+  .card-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .card-header .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .card-header .card-title { font-size: 15px; font-weight: 600; flex: 1; }
+  .card-header .card-sub { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+  .card-header .chevron {
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .card.open .chevron { transform: rotate(180deg); }
+  .card-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .card.open .card-body { display: block; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    padding: 16px 16px 6px;
+  }
+
+  /* PILL TAGS */
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 2px 3px 2px 0;
+  }
+  .pill-blue { background: var(--primary-pale); color: var(--primary); }
+  .pill-green { background: var(--accent-pale); color: var(--accent); }
+  .pill-red { background: var(--danger-pale); color: var(--danger); }
+  .pill-yellow { background: var(--warning-pale); color: var(--warning); }
+
+  /* TABLES */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  .ref-table th {
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 7px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:nth-child(even) td { background: #fafbfc; }
+
+  /* ALERT BOXES */
+  .alert {
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .alert-red { background: var(--danger-pale); border-left: 3px solid var(--danger); color: var(--danger); }
+  .alert-yellow { background: var(--warning-pale); border-left: 3px solid #f0b429; color: var(--warning); }
+  .alert-blue { background: var(--primary-pale); border-left: 3px solid var(--primary-light); color: var(--primary); }
+  .alert-green { background: var(--accent-pale); border-left: 3px solid var(--accent-light); color: var(--accent); }
+  .alert strong { display: block; margin-bottom: 3px; }
+
+  /* CRITERIA LISTS */
+  .criteria-list { margin: 8px 0; padding: 0; list-style: none; }
+  .criteria-list li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .criteria-list li:last-child { border-bottom: none; }
+  .criteria-list li::before {
+    content: '•';
+    position: absolute;
+    left: 6px;
+    color: var(--primary-light);
+    font-size: 16px;
+    line-height: 1.1;
+  }
+  .criteria-list.check li::before { content: '✓'; color: var(--accent-light); font-size: 13px; line-height: 1.4; }
+
+  /* SUBHEADINGS */
+  .sub-h { font-size: 13px; font-weight: 600; color: var(--primary); margin: 12px 0 6px; }
+  .body-text { font-size: 13px; line-height: 1.6; color: var(--text); margin: 6px 0; }
+  .muted { color: var(--text-muted); font-size: 12px; }
+
+  /* EMERGENCY QUICK REF */
+  .emerg-row {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+    font-size: 13px;
+  }
+  .emerg-row:last-child { border-bottom: none; }
+  .emerg-sym { font-weight: 600; color: var(--danger); min-width: 110px; flex-shrink: 0; }
+  .emerg-detail { flex: 1; }
+  .emerg-dose { font-size: 12px; color: var(--text-muted); }
+
+  /* TOOL CARDS (assessment) */
+  .tool-block {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin: 10px 0;
+  }
+  .tool-block h3 { font-size: 14px; font-weight: 600; margin: 0 0 8px; color: var(--primary); }
+
+  /* SBAR */
+  .sbar-row {
+    display: flex;
+    gap: 10px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .sbar-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .sbar-content { flex: 1; padding-top: 4px; }
+  .sbar-label { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+  .sbar-example { color: var(--text); margin-top: 2px; font-style: italic; }
+
+  /* CHECKLIST */
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--accent-light);
+  }
+  .check-box.checked { background: var(--accent-pale); border-color: var(--accent-light); }
+
+  /* SCORE DISPLAY */
+  .score-display {
+    text-align: center;
+    padding: 12px;
+    background: var(--primary-pale);
+    border-radius: var(--radius-sm);
+    margin: 10px 0;
+  }
+  .score-num { font-size: 36px; font-weight: 700; color: var(--primary); }
+  .score-label { font-size: 12px; color: var(--text-muted); }
+
+  /* SCRIPT BOX */
+  .script-box {
+    background: #f0f7ff;
+    border: 1px solid #c8dff4;
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--primary);
+    margin: 8px 0;
+  }
+  .script-box::before { content: '💬 '; font-style: normal; }
+
+  /* CONVERSION CALC */
+  .calc-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 8px 0;
+  }
+  .calc-row input[type=number] {
+    width: 80px;
+    padding: 8px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    text-align: center;
+  }
+  .calc-row select {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    background: white;
+  }
+  .calc-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 6px;
+  }
+  .calc-result {
+    background: var(--accent-pale);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-top: 8px;
+    display: none;
+  }
+
+  /* PPS TABLE */
+  .pps-table td:first-child { font-weight: 700; color: var(--primary); min-width: 42px; }
+  .pps-row-highlight td { background: #fff3e0 !important; }
+
+  /* HOME SCREEN */
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+  .home-tile {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .home-tile:active { background: var(--surface); }
+  .home-tile .tile-icon {
+    font-size: 22px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2px;
+  }
+  .home-tile .tile-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .home-tile .tile-sub { font-size: 11px; color: var(--text-muted); }
+
+  /* QUICK ACCESS BANNER */
+  .quick-banner {
+    margin: 12px 12px 0;
+    background: var(--danger);
+    color: white;
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .quick-banner .qb-icon { font-size: 22px; }
+  .quick-banner .qb-title { font-size: 14px; font-weight: 700; }
+  .quick-banner .qb-sub { font-size: 12px; opacity: 0.85; }
+  .quick-banner .qb-arrow { margin-left: auto; font-size: 18px; opacity: 0.8; }
+
+  /* RESPONSIVE */
+  @media (max-width: 360px) {
+    .home-grid { grid-template-columns: 1fr; }
+    .emerg-sym { min-width: 90px; }
+  }
+
+  /* HIGHLIGHT */
+  .hl { background: #fff3cd; border-radius: 3px; padding: 0 2px; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="app-header" id="appHeader">
+  <button class="back-btn" id="backBtn" onclick="goHome()">&#8592;</button>
+  <div class="logo-mark" id="headerIcon">🏥</div>
+  <div class="header-text">
+    <h1 id="headerTitle">Luminary Hospice</h1>
+    <p class="subtitle" id="headerSub">Clinician Pocket Toolkit</p>
+  </div>
+</div>
+
+<div class="main" id="mainContent">
+
+<!-- ===== HOME ===== -->
+<div class="section active" id="section-home">
+  <div class="quick-banner" onclick="showSection('emergency', '🚨', 'Emergency Quick Reference', 'Field crisis guide')">
+    <span class="qb-icon">🚨</span>
+    <div>
+      <div class="qb-title">Emergency Quick Reference</div>
+      <div class="qb-sub">Dosing, crisis response, comfort kits</div>
+    </div>
+    <span class="qb-arrow">›</span>
+  </div>
+
+  <div class="section-label">Clinical Sections</div>
+  <div class="home-grid">
+    <div class="home-tile" onclick="showSection('eligibility', '📋', 'Eligibility & Recert', 'Diagnosis-specific criteria')">
+      <div class="tile-icon" style="background:#d6eaf8">📋</div>
+      <div class="tile-name">Eligibility & Recert</div>
+      <div class="tile-sub">LCD criteria by diagnosis</div>
+    </div>
+    <div class="home-tile" onclick="showSection('assessment', '📊', 'Assessment Tools', 'PPS, FAST, Braden, scales')">
+      <div class="tile-icon" style="background:#d5f5e3">📊</div>
+      <div class="tile-name">Assessment Tools</div>
+      <div class="tile-sub">PPS, FAST, Braden, scales</div>
+    </div>
+    <div class="home-tile" onclick="showSection('symptoms', '💊', 'Symptom Management', 'Pharm & non-pharm')">
+      <div class="tile-icon" style="background:#fef9e7">💊</div>
+      <div class="tile-name">Symptom Management</div>
+      <div class="tile-sub">Pharm & non-pharm guides</div>
+    </div>
+    <div class="home-tile" onclick="showSection('comms', '🗣️', 'Communication & Docs', 'SBAR, SOAP, charting')">
+      <div class="tile-icon" style="background:#f3e8ff">🗣️</div>
+      <div class="tile-name">Comms & Docs</div>
+      <div class="tile-sub">SBAR, SOAP, charting phrases</div>
+    </div>
+    <div class="home-tile" onclick="showSection('idg', '👥', 'IDG & Interdisciplinary', 'Checklists by discipline')">
+      <div class="tile-icon" style="background:#e8f5e9">👥</div>
+      <div class="tile-name">IDG & Team Tools</div>
+      <div class="tile-sub">RN, SW, Aide, Chaplain</div>
+    </div>
+    <div class="home-tile" onclick="showSection('compliance', '✅', 'Compliance & Best Practices', 'Infection control, orders')">
+      <div class="tile-icon" style="background:#fce4ec">✅</div>
+      <div class="tile-name">Compliance</div>
+      <div class="tile-sub">Infection control, hand hygiene</div>
+    </div>
+  </div>
+
+  <div class="section-label">Quick Calculators</div>
+  <div class="card" style="margin: 0 12px 12px">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#d6eaf8">⚖️</div>
+      <div><div class="card-title">Opioid Conversion Calculator</div><div class="card-sub">PO morphine equivalents</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="body-text">Enter current dose and select medication to calculate oral morphine equivalent (OME).</p>
+      <div class="calc-row">
+        <input type="number" id="opioidDose" placeholder="Dose" min="0">
+        <select id="opioidDrug">
+          <option value="1">Morphine PO</option>
+          <option value="3">Morphine IV/SC (×3)</option>
+          <option value="0.133">Hydromorphone PO (÷7.5 → ×1)</option>
+          <option value="20">Hydromorphone IV/SC (×20)</option>
+          <option value="1.5">Oxycodone PO (×1.5)</option>
+          <option value="3">Oxymorphone PO (×3)</option>
+          <option value="0.15">Codeine PO (÷200×30 = ×0.15)</option>
+          <option value="1">Hydrocodone PO</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calcOpioid()">Calculate OME</button>
+      <div class="calc-result" id="opioidResult"></div>
+      <div class="alert alert-yellow" style="margin-top:10px">⚠️ Reduce by 25–50% for incomplete cross-tolerance when rotating. Methadone requires specialist calculation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EMERGENCY ===== -->
+<div class="section" id="section-emergency">
+  <div class="alert alert-red" style="margin: 12px 12px 0">
+    <strong>Field Crisis Reference</strong>
+    Always follow agency policy. Verify current MAR before administering.
+  </div>
+
+  <div class="section-label">Emergency Dosing Quick Reference</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding: 12px 14px">
+      <div class="emerg-row">
+        <div class="emerg-sym">Severe Pain</div>
+        <div class="emerg-detail">Morphine Sulfate<div class="emerg-dose">5–10 mg SL/SC</div></div>
+      </div>
+      <div class="emerg-row">
+        <div class="emerg-sym">Dyspnea</div>
+        <div class="emerg-detail">Morphine 2.5–5 mg + Lorazepam 0.5–1 mg<div class="emerg-dose">SL/SC</div></div>
+      </div>
+      <div class="emerg-row">
+        <div class="emerg-sym">Terminal Agitation</div>
+        <div class="emerg-detail">Haloperidol 1–2 mg • ABH Gel 1 mL • Lorazepam 1–2 mg<div class="emerg-dose">SL / Topical / SL</div></div>
+      </div>
+      <div class="emerg-row">
+        <div class="emerg-sym">Terminal Secretions</div>
+        <div class="emerg-detail">Atropine 1–2 drops SL • Glycopyrrolate 0.2 mg SC<div class="emerg-dose">Scopolamine patch 1.5 mg q72h (slow onset)</div></div>
+      </div>
+      <div class="emerg-row">
+        <div class="emerg-sym">Massive Hemorrhage</div>
+        <div class="emerg-detail">Midazolam 2–5 mg + Lorazepam 2 mg + Morphine 5–10 mg<div class="emerg-dose">SL/SC — Use dark towels. Do not leave patient.</div></div>
+      </div>
+      <div class="emerg-row">
+        <div class="emerg-sym">Seizure</div>
+        <div class="emerg-detail">Lorazepam 1–2 mg SL • Diastat 10–20 mg PR<div class="emerg-dose">Do not restrain. Recovery position.</div></div>
+      </div>
+      <div class="emerg-row">
+        <div class="emerg-sym">N/V</div>
+        <div class="emerg-detail">Haloperidol 0.5–1 mg • Metoclopramide 10 mg • Ondansetron 4–8 mg ODT<div class="emerg-dose">SL/PO/ODT</div></div>
+      </div>
+      <div class="emerg-row">
+        <div class="emerg-sym">Fever</div>
+        <div class="emerg-detail">Acetaminophen 500–1000 mg<div class="emerg-dose">PO/PR q6h PRN</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Comfort Kits</div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#d6eaf8">🧰</div>
+      <div><div class="card-title">General Comfort Kit</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="ref-table">
+        <tr><th>Medication</th><th>Purpose</th><th>Dose / Route</th></tr>
+        <tr><td>Morphine Sulfate 20 mg/mL</td><td>Pain, dyspnea</td><td>5–10 mg SL/PO q1–2h PRN</td></tr>
+        <tr><td>Lorazepam 0.5–1 mg</td><td>Anxiety, agitation</td><td>0.5–1 mg q4–6h PRN SL/PO</td></tr>
+        <tr><td>Haloperidol 0.5–2 mg</td><td>Nausea, delirium</td><td>0.5–1 mg q4–6h PRN SL/PO</td></tr>
+        <tr><td>Atropine 1% drops</td><td>Terminal secretions</td><td>1–2 drops SL q1h PRN</td></tr>
+        <tr><td>Acetaminophen</td><td>Pain, fever</td><td>500–1000 mg q6h PRN PO/PR</td></tr>
+        <tr><td>Bisacodyl supp</td><td>Constipation</td><td>10 mg PR daily PRN</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fce4ec">❤️</div>
+      <div><div class="card-title">Cardiac Comfort Kit</div><div class="card-sub">CHF / ESHF</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="ref-table">
+        <tr><th>Medication</th><th>Purpose</th><th>Dose / Route</th></tr>
+        <tr><td>Morphine Sulfate</td><td>Dyspnea, air hunger</td><td>2.5–5 mg q1h PRN SL/SC</td></tr>
+        <tr><td>Lorazepam</td><td>Anxiety</td><td>0.5–1 mg q4–6h PRN SL</td></tr>
+        <tr><td>Furosemide</td><td>Fluid overload</td><td>20–40 mg daily PRN PO/IM</td></tr>
+        <tr><td>Nitroglycerin SL</td><td>Angina</td><td>0.3–0.6 mg q5min ×3 PRN SL</td></tr>
+        <tr><td>Oxygen</td><td>Hypoxia</td><td>1–4 L/min NC PRN</td></tr>
+      </table>
+      <div class="alert alert-blue" style="margin-top:8px">💡 IM Lasix and Foley can be life-improving in dyspnea from fluid retention.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fff3e0">⚡</div>
+      <div><div class="card-title">Seizure Comfort Kit</div><div class="card-sub">Brain mets, neuro end-stage</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="ref-table">
+        <tr><th>Medication</th><th>Purpose</th><th>Dose / Route</th></tr>
+        <tr><td>Lorazepam</td><td>Acute seizure</td><td>1–2 mg q1h PRN SL/IV/SC</td></tr>
+        <tr><td>Diazepam (Diastat)</td><td>Active seizure</td><td>10–20 mg PR once</td></tr>
+        <tr><td>Levetiracetam oral sol</td><td>Maintenance</td><td>500–1000 mg BID PO</td></tr>
+        <tr><td>Clonazepam ODT</td><td>Seizure control</td><td>0.5–1 mg q8h PRN SL</td></tr>
+      </table>
+      <div class="sub-h">Seizure Safety (Caregiver Instructions)</div>
+      <ul class="criteria-list">
+        <li>Do NOT restrain during seizure</li>
+        <li>Protect head with pillow or folded towel</li>
+        <li>Turn to recovery position (side) to prevent aspiration</li>
+        <li>Remove nearby hazards; do not put anything in mouth</li>
+        <li>Record seizure duration</li>
+        <li>Low beds, floor mats, padded rails if applicable</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">SC Injection Reference</div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <div class="sub-h">Injection Sites (rotate q24h)</div>
+      <p class="body-text">Upper arm • Abdomen • Thigh • Upper buttock<br>Use 25–27g needle, ⅝ inch</p>
+      <div class="sub-h">Emergency Supply Checklist</div>
+      <div id="suppliesChecklist"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ELIGIBILITY ===== -->
+<div class="section" id="section-eligibility">
+  <div class="alert alert-blue" style="margin:12px 12px 0">
+    <strong>Based on Medicare LCDs</strong>
+    Source: CMS Medicare Coverage Database
+  </div>
+
+  <div class="section-label">General Eligibility (All Diagnoses)</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <p class="muted">Patient may have life expectancy ≤6 months if exhibiting:</p>
+      <ul class="criteria-list">
+        <li>Progressive disease — worsening clinical status, symptoms, labs</li>
+        <li>Unintentional weight loss ≥10% in past 6 months</li>
+        <li>Declining serum albumin or cholesterol</li>
+        <li>Dysphagia → recurrent aspiration / inadequate PO intake</li>
+        <li>Decline in KPS or PPS due to disease progression</li>
+        <li>Increased dependence with ADLs</li>
+        <li>Progressive stage 3–4 pressure ulcers despite optimal care</li>
+        <li>Increasing ER visits, hospitalizations, or MD visits related to primary dx</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">Diagnosis-Specific Criteria</div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8eaf6">🧠</div>
+      <div><div class="card-title">Dementia / Alzheimer's</div><div class="card-sub">FAST 7C or beyond</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">FAST Stage 7C+ (Alzheimer's)</div>
+      <ul class="criteria-list">
+        <li>Speech limited to ≤6 intelligible words</li>
+        <li>Unable to ambulate without assistance</li>
+        <li>Unable to sit up independently</li>
+      </ul>
+      <div class="sub-h">Plus ≥1 complication in past 12 months:</div>
+      <ul class="criteria-list">
+        <li>Aspiration pneumonia</li>
+        <li>Pyelonephritis</li>
+        <li>Septicemia</li>
+        <li>Multiple stage 3–4 pressure ulcers</li>
+        <li>Recurrent fever after antibiotics</li>
+        <li>Weight loss ≥10% in 6 months or albumin &lt;2.5 g/dL</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fce4ec">❤️</div>
+      <div><div class="card-title">Heart Disease / CHF</div><div class="card-sub">NYHA Class IV</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Primary Criteria</div>
+      <ul class="criteria-list">
+        <li>NYHA Class IV — symptoms at rest</li>
+        <li>Unable to perform minimal activity without dyspnea or angina</li>
+        <li>Optimally treated (diuretics, vasodilators, ACE-I, hydralazine, nitrates)</li>
+        <li>Angina at rest, resistant to nitrates; not candidate or declined invasive procedures</li>
+      </ul>
+      <div class="sub-h">Supporting Documentation</div>
+      <ul class="criteria-list">
+        <li>EF &lt;20%</li>
+        <li>Treatment-resistant symptomatic dysrhythmias</li>
+        <li>History of cardiac syncope or CVA from cardiac embolism</li>
+        <li>History of cardiac resuscitation</li>
+      </ul>
+      <div class="sub-h">Signs/Symptoms</div>
+      <p class="body-text">Orthopnea • PND • Dependent edema • Syncope • Weakness • Chest pain • Diaphoresis • Cachexia • JVD • Rales • Hepatomegaly</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e3f2fd">🫁</div>
+      <div><div class="card-title">Pulmonary / COPD</div><div class="card-sub">Disabling dyspnea at rest</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li>Disabling dyspnea at rest, poorly responsive to bronchodilators</li>
+        <li>Bed-to-chair existence, fatigue, cough</li>
+        <li>Increasing ED visits/hospitalizations for pulmonary infections or respiratory failure</li>
+      </ul>
+      <div class="sub-h">Documentation (past 3 months)</div>
+      <ul class="criteria-list">
+        <li>Resting arterial hypoxemia: pO₂ &lt;55 mmHg or O₂ sat &lt;88%</li>
+        <li>Hypercapnia: pCO₂ &gt;50 mmHg</li>
+      </ul>
+      <div class="sub-h">Supporting</div>
+      <ul class="criteria-list">
+        <li>Cor pulmonale and right heart failure</li>
+        <li>Unintentional progressive weight loss</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fce4ec">🎗️</div>
+      <div><div class="card-title">Cancer</div><div class="card-sub">PPS ≤70%</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li>Disease with metastases at presentation</li>
+        <li>Progression to metastatic disease with continued decline despite therapy</li>
+        <li>Patient declines further disease-directed therapy</li>
+        <li>Certain cancers (SCLC, brain, pancreatic) may qualify without other criteria</li>
+        <li>PPS ≤70%</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8f5e9">🧬</div>
+      <div><div class="card-title">Stroke / Coma</div><div class="card-sub">PPS ≤40%</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li>PPS ≤40%</li>
+        <li>Weight loss &gt;10% in 6 months or &gt;7.5% in 3 months</li>
+        <li>Serum albumin &lt;2.5 g/dL</li>
+        <li>Pulmonary aspiration not responsive to SLP</li>
+        <li>Dysphagia severe enough to prevent sustaining life; patient declines artificial nutrition/hydration</li>
+        <li>Sequential calorie counts documenting inadequate intake</li>
+      </ul>
+      <div class="sub-h">Supplemental</div>
+      <p class="body-text">Aspiration pneumonia • Upper UTI • Sepsis • Refractory decubitus (3–4) • Recurrent fever after antibiotics</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fff3e0">⚡</div>
+      <div><div class="card-title">ALS</div><div class="card-sub">Critically impaired breathing</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Breathing Impairment (any of)</div>
+      <ul class="criteria-list">
+        <li>Dyspnea at rest</li>
+        <li>Vital capacity &lt;30%</li>
+        <li>Supplemental O₂ required at rest</li>
+        <li>Declines artificial ventilation</li>
+      </ul>
+      <div class="sub-h">Rapid Disease Progression</div>
+      <ul class="criteria-list">
+        <li>Independent ambulation → wheelchair/bed-bound</li>
+        <li>Normal → barely intelligible/unintelligible speech</li>
+        <li>Normal → pureed diet</li>
+        <li>Independent ADLs → major assistance in all ADLs</li>
+      </ul>
+      <div class="sub-h">Severe Nutritional Impairment</div>
+      <ul class="criteria-list">
+        <li>Oral intake insufficient to sustain life</li>
+        <li>Continuing weight loss; dehydration/hypovolemia</li>
+        <li>Absence of artificial feeding</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#f3e8ff">🔬</div>
+      <div><div class="card-title">HIV Disease</div><div class="card-sub">CD4 &lt;25 + viral load &gt;100K</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li>CD4+ &lt;25 cells/mm³</li>
+        <li>Viral load &gt;100,000 copies/mL</li>
+        <li>PPS &lt;50%</li>
+      </ul>
+      <div class="sub-h">Plus ≥1 of:</div>
+      <p class="body-text">CNS lymphoma • Wasting &gt;33% LBM (untreated/refractory) • MAC bacteremia • PML • Systemic lymphoma • Refractory visceral KS • Renal failure without dialysis • Refractory cryptosporidium • Refractory toxoplasmosis</p>
+      <div class="sub-h">Supplemental</div>
+      <p class="body-text">Chronic diarrhea ≥1 year • Albumin &lt;2.5 g/dL • Age &gt;50 • Advanced AIDS dementia • CHF at rest • Advanced liver disease</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fff8e1">🫀</div>
+      <div><div class="card-title">Liver Disease</div><div class="card-sub">Synthetic liver failure</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Synthetic Liver Failure</div>
+      <ul class="criteria-list">
+        <li>PT &gt;5 seconds over control or INR &gt;1.5</li>
+        <li>Serum albumin &lt;2.5 g/dL</li>
+      </ul>
+      <div class="sub-h">Plus ≥1 of:</div>
+      <ul class="criteria-list">
+        <li>Ascites refractory to treatment</li>
+        <li>Spontaneous bacterial peritonitis</li>
+        <li>Hepatorenal syndrome (elevated Cr/BUN, oliguria &lt;500 mL/day, urine Na &lt;10 mEq)</li>
+        <li>Hepatic encephalopathy refractory to treatment</li>
+        <li>Recurrent variceal bleeding despite therapy</li>
+      </ul>
+      <div class="sub-h">Supplemental</div>
+      <p class="body-text">Progressive malnutrition • Muscle wasting • Continued alcoholism • Liver cancer • Hep B or C refractory to interferon</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8eaf6">🧪</div>
+      <div><div class="card-title">Parkinson's Disease</div><div class="card-sub">Rapid progression + complications</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Rapid Progression (same criteria as ALS)</div>
+      <ul class="criteria-list">
+        <li>Ambulation → wheelchair/bed-bound</li>
+        <li>Normal → unintelligible speech</li>
+        <li>Normal → pureed diet</li>
+        <li>Independent → major assist in all ADLs</li>
+      </ul>
+      <div class="sub-h">Breathing (any of)</div>
+      <ul class="criteria-list">
+        <li>Dyspnea at rest</li>
+        <li>VC &lt;30% predicted</li>
+        <li>Supplemental O₂ at rest</li>
+        <li>Declines artificial ventilation</li>
+      </ul>
+      <div class="sub-h">Complications (past 12 months)</div>
+      <p class="body-text">Recurrent aspiration pneumonia • Pyelonephritis • Recurrent fever after antibiotics • Stage 3–4 decubitus</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ASSESSMENT ===== -->
+<div class="section" id="section-assessment">
+  <div class="section-label">Performance Scales</div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#d5f5e3">📈</div>
+      <div><div class="card-title">Palliative Performance Scale (PPS)</div><div class="card-sub">Hospice range ≤50%</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-green" style="margin-bottom:8px">Hospice supportive: PPS ≤50% • Recert criteria often: PPS ≤40%</div>
+      <div style="overflow-x:auto">
+        <table class="ref-table pps-table">
+          <tr><th>PPS%</th><th>Ambulation</th><th>Self-Care</th><th>Intake</th><th>Consciousness</th></tr>
+          <tr><td>100%</td><td>Full</td><td>Full</td><td>Normal</td><td>Full</td></tr>
+          <tr><td>90%</td><td>Full</td><td>Full</td><td>Normal</td><td>Full</td></tr>
+          <tr><td>80%</td><td>Full</td><td>Full</td><td>Normal/reduced</td><td>Full</td></tr>
+          <tr><td>70%</td><td>Reduced</td><td>Some help</td><td>Normal/reduced</td><td>Full</td></tr>
+          <tr class="pps-row-highlight"><td>60%</td><td>Reduced</td><td>Some help</td><td>Reduced</td><td>Full/confusion</td></tr>
+          <tr class="pps-row-highlight"><td>50%</td><td>Mainly sit/lie</td><td>Considerable help</td><td>Reduced</td><td>Full/drowsy±confusion</td></tr>
+          <tr style="background:#fff3e0"><td>40%</td><td>Bedbound most</td><td>Mainly assist</td><td>Minimal</td><td>Drowsy±confusion</td></tr>
+          <tr style="background:#fdecea"><td>30%</td><td>Bedbound</td><td>Total care</td><td>Minimal</td><td>Drowsy±confusion</td></tr>
+          <tr style="background:#fdecea"><td>20%</td><td>Bedbound</td><td>Total care</td><td>Sips only</td><td>Drowsy/unconscious</td></tr>
+          <tr style="background:#fdecea"><td>10%</td><td>Bedbound</td><td>Total care</td><td>Mouth care only</td><td>Drowsy/unconscious</td></tr>
+          <tr><td>0%</td><td colspan="4">Death</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#d6eaf8">🏥</div>
+      <div><div class="card-title">Karnofsky Performance Scale (KPS)</div><div class="card-sub">Score ≤50 often qualifies</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="ref-table">
+        <tr><th>KPS</th><th>Description</th></tr>
+        <tr><td>100</td><td>Normal; no complaints</td></tr>
+        <tr><td>90</td><td>Normal activity; minor symptoms</td></tr>
+        <tr><td>80</td><td>Normal activity with effort; some symptoms</td></tr>
+        <tr><td>70</td><td>Self-care; unable to work</td></tr>
+        <tr><td>60</td><td>Occasional assistance needed</td></tr>
+        <tr style="background:#fff3e0"><td>50</td><td>Considerable assistance; frequent medical care</td></tr>
+        <tr style="background:#fdecea"><td>40</td><td>Disabled; special care required</td></tr>
+        <tr style="background:#fdecea"><td>30</td><td>Severely disabled; hospital admission indicated</td></tr>
+        <tr style="background:#fdecea"><td>20</td><td>Very sick; active supportive care needed</td></tr>
+        <tr style="background:#fdecea"><td>10</td><td>Moribund; fatal processes progressing rapidly</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">Symptom & Pain Scales</div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fce4ec">😟</div>
+      <div><div class="card-title">Pain Scales</div><div class="card-sub">NRS, FACES, FLACC, PAINAD</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">NRS (Numeric Rating Scale)</div>
+      <p class="body-text">"Rate your pain from 0 (no pain) to 10 (worst pain imaginable)."</p>
+
+      <div class="sub-h">Wong-Baker FACES</div>
+      <p class="body-text">For pediatric or cognitively impaired adults. Show 6 faces (0–10) and ask patient to point.</p>
+      <table class="ref-table">
+        <tr><th>Face</th><th>Score</th><th>Description</th></tr>
+        <tr><td>😀</td><td>0</td><td>No hurt</td></tr>
+        <tr><td>🙂</td><td>2</td><td>Hurts a little bit</td></tr>
+        <tr><td>😐</td><td>4</td><td>Hurts a little more</td></tr>
+        <tr><td>😟</td><td>6</td><td>Hurts even more</td></tr>
+        <tr><td>😢</td><td>8</td><td>Hurts a whole lot</td></tr>
+        <tr><td>😭</td><td>10</td><td>Hurts worst</td></tr>
+      </table>
+
+      <div class="sub-h">FLACC Scale (nonverbal)</div>
+      <table class="ref-table">
+        <tr><th>Category</th><th>0</th><th>1</th><th>2</th></tr>
+        <tr><td>Face</td><td>No expression</td><td>Occasional grimace</td><td>Frequent frown, clenched jaw</td></tr>
+        <tr><td>Legs</td><td>Normal/relaxed</td><td>Uneasy, tense</td><td>Kicking or drawn up</td></tr>
+        <tr><td>Activity</td><td>Lying quietly</td><td>Squirming, tense</td><td>Arched, rigid, jerking</td></tr>
+        <tr><td>Cry</td><td>No cry</td><td>Moans/whimpers</td><td>Crying steadily</td></tr>
+        <tr><td>Consolability</td><td>Content, relaxed</td><td>Reassured by touch</td><td>Difficult to console</td></tr>
+      </table>
+      <p class="muted">Score: 0 = comfortable • 1–3 = mild • 4–6 = moderate • 7–10 = severe</p>
+
+      <div class="sub-h">PAINAD (Advanced Dementia)</div>
+      <table class="ref-table">
+        <tr><th>Behavior</th><th>0</th><th>1</th><th>2</th></tr>
+        <tr><td>Breathing</td><td>Normal</td><td>Occasional labored</td><td>Noisy/Cheyne-Stokes</td></tr>
+        <tr><td>Vocalization</td><td>None</td><td>Occasional moan</td><td>Repeated calling out</td></tr>
+        <tr><td>Facial Exp.</td><td>Smiling/inexpressive</td><td>Sad, frown</td><td>Grimacing</td></tr>
+        <tr><td>Body Language</td><td>Relaxed</td><td>Tense, pacing</td><td>Rigid, strikes out</td></tr>
+        <tr><td>Consolability</td><td>No need</td><td>Distracted</td><td>Unable to console</td></tr>
+      </table>
+      <p class="muted">Observe 2–5 min. Total /10: 0–1 minimal • 2–3 mild • 4–6 moderate • 7–10 severe</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8f5e9">📊</div>
+      <div><div class="card-title">ESAS</div><div class="card-sub">Edmonton Symptom Assessment</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="body-text">Rate each symptom over the past 24 hours (0 = none, 10 = worst possible).</p>
+      <div id="esasScores"></div>
+      <div class="calc-result" id="esasResult"></div>
+      <p class="muted">0–3 mild • 4–6 moderate • 7–10 severe per symptom. Max total: 100.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Functional & Risk Assessments</div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fff3e0">⚠️</div>
+      <div><div class="card-title">Fall Risk Assessment</div><div class="card-sub">Morse Scale-based</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div id="fallRiskForm"></div>
+      <div class="calc-result" id="fallRiskResult"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fce4ec">🩹</div>
+      <div><div class="card-title">Braden Scale</div><div class="card-sub">Pressure injury risk</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="ref-table">
+        <tr><th>Score</th><th>Risk Level</th></tr>
+        <tr><td>19–23</td><td>No Risk</td></tr>
+        <tr><td>15–18</td><td>Mild Risk</td></tr>
+        <tr><td>13–14</td><td>Moderate Risk</td></tr>
+        <tr><td>10–12</td><td>High Risk</td></tr>
+        <tr style="background:#fdecea"><td>≤9</td><td><strong>Very High Risk</strong></td></tr>
+      </table>
+      <div class="sub-h">Categories (each scored 1–4, Friction scored 1–3)</div>
+      <p class="body-text">Sensory Perception • Moisture • Activity • Mobility • Nutrition • Friction & Shear</p>
+      <p class="muted">Total possible: 6–23. Use at admission, recert, and any change in mobility/nutrition/cognition.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e3f2fd">🚶</div>
+      <div><div class="card-title">TUG Test</div><div class="card-sub">Timed Up and Go</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="body-text">Patient seated in standard armchair (17–18" seat). Say: "When I say 'go,' stand up, walk to the line 10 feet away, turn, walk back, and sit down." Time from rising to seated.</p>
+      <table class="ref-table">
+        <tr><th>Time</th><th>Interpretation</th></tr>
+        <tr><td>&lt;10 sec</td><td>Independent, low fall risk</td></tr>
+        <tr><td>10–19 sec</td><td>Mostly independent, some risk</td></tr>
+        <tr><td>20–29 sec</td><td>Needs assist, higher risk</td></tr>
+        <tr style="background:#fdecea"><td>≥30 sec</td><td>Severe mobility issues; high risk</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8eaf6">💓</div>
+      <div><div class="card-title">NYHA Classification</div><div class="card-sub">CHF severity</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="ref-table">
+        <tr><th>Class</th><th>Symptoms</th></tr>
+        <tr><td>I</td><td>No symptoms with ordinary activity</td></tr>
+        <tr><td>II</td><td>Slight limitations with ordinary activity</td></tr>
+        <tr><td>III</td><td>Marked limitation; symptoms with less-than-ordinary activity</td></tr>
+        <tr style="background:#fdecea"><td>IV</td><td><strong>Symptoms at rest — meets hospice CHF LCD</strong></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SYMPTOMS ===== -->
+<div class="section" id="section-symptoms">
+  <div class="section-label">Symptom Management</div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fce4ec">💊</div>
+      <div><div class="card-title">Pain Management</div><div class="card-sub">WHO Ladder + opioid guide</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">WHO Analgesic Ladder</div>
+      <ul class="criteria-list">
+        <li><strong>Step 1:</strong> Non-opioid ± adjuvant (e.g., acetaminophen)</li>
+        <li><strong>Step 2:</strong> Weak opioid ± non-opioid</li>
+        <li><strong>Step 3:</strong> Strong opioid ± adjuvant</li>
+      </ul>
+      <div class="sub-h">Opioid Conversions (to OME)</div>
+      <table class="ref-table">
+        <tr><th>Medication</th><th>Form</th><th>≈ 30 mg oral morphine</th></tr>
+        <tr><td>Morphine</td><td>PO</td><td>30 mg</td></tr>
+        <tr><td>Morphine</td><td>IV/SC</td><td>10 mg</td></tr>
+        <tr><td>Hydromorphone</td><td>PO</td><td>7.5 mg</td></tr>
+        <tr><td>Hydromorphone</td><td>IV/SC</td><td>1.5 mg</td></tr>
+        <tr><td>Oxycodone</td><td>PO</td><td>20 mg</td></tr>
+        <tr><td>Oxymorphone</td><td>PO</td><td>10 mg</td></tr>
+        <tr><td>Fentanyl (patch)</td><td>TD</td><td>25 mcg/hr ≈ 60–100 mg OME/day</td></tr>
+        <tr><td>Codeine</td><td>PO</td><td>200 mg</td></tr>
+        <tr><td>Hydrocodone</td><td>PO</td><td>30 mg</td></tr>
+      </table>
+      <div class="alert alert-yellow">⚠️ Reduce 25–50% for cross-tolerance when rotating. Methadone = specialist only.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e3f2fd">🫁</div>
+      <div><div class="card-title">Dyspnea</div><div class="card-sub">Shortness of breath management</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Suggested Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Morphine 2.5–5 mg PO/SC q1h PRN (reduces air hunger)</li>
+        <li>Lorazepam 0.5–1 mg PO/SL q6h PRN if anxiety present</li>
+        <li>Oxygen if hypoxic or symptomatic</li>
+      </ul>
+      <div class="script-box">This medicine will help ease their breathing and make them feel calmer.</div>
+      <div class="sub-h">Non-Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>High Fowler's (60–90°) or tripod position</li>
+        <li>Handheld or room fan directed at face (trigeminal nerve → reduces dyspnea)</li>
+        <li>Pursed-lip breathing: inhale nose, exhale slowly through pursed lips</li>
+        <li>Open window for fresh air if possible</li>
+        <li>Cool room temperature</li>
+        <li>Calming presence; minimize stimulation during episodes</li>
+        <li>Guided imagery, relaxation scripts</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8f5e9">💧</div>
+      <div><div class="card-title">Terminal Secretions</div><div class="card-sub">Death rattle</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Suggested Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Atropine 1% ophthalmic drops: 1–2 drops SL q1h PRN</li>
+        <li>Glycopyrrolate 0.1–0.2 mg SC q4h PRN</li>
+        <li>Scopolamine patch 1.5 mg q72h (slow onset — hours)</li>
+      </ul>
+      <div class="sub-h">Non-Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Turn patient to side (right preferred) — gravitational drainage</li>
+        <li>Elevate HOB slightly</li>
+        <li>Minimize oral intake (actively dying)</li>
+        <li>Oral swabs for comfort, not stimulation</li>
+        <li>Suction only if secretions visible in mouth — avoid over-suctioning</li>
+      </ul>
+      <div class="script-box">This sound is common at this time. It's not uncomfortable for your loved one, but we're here to make sure they're at peace.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fff3e0">😰</div>
+      <div><div class="card-title">Delirium & Terminal Agitation</div><div class="card-sub">Crisis management</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Signs</div>
+      <p class="body-text">Confusion, vocal outbursts, moaning, pacing, fidgeting, screaming, thrashing, striking out, pulling lines, spiritual distress.</p>
+      <div class="sub-h">Suggested Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Haloperidol 0.5–2 mg PO/SC q1–2h PRN (start low, titrate)</li>
+        <li>ABH Gel 1 mL q4h PRN</li>
+        <li>Lorazepam 0.5–1 mg q4h PRN (only if anxiety component)</li>
+        <li>Consider: olanzapine, chlorpromazine, or methotrimeprazine if unresponsive</li>
+      </ul>
+      <div class="alert alert-red">Avoid benzos alone in hypoactive delirium — may worsen symptoms.</div>
+      <div class="sub-h">Non-Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Soft lighting; limit noise; familiar objects</li>
+        <li>Soft, slow, calm voice: "You're safe. I'm here. You're in your room."</li>
+        <li>Do not restrain physically; use low beds and floor mats</li>
+        <li>Address pain, full bladder/bowel, thirst, fever</li>
+        <li>Soft music, aromatherapy (lavender, chamomile), warm blanket</li>
+      </ul>
+      <div class="script-box">This behavior can be a normal part of the body shutting down. We're making sure they are comfortable and peaceful.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fce4ec">🤢</div>
+      <div><div class="card-title">Nausea & Vomiting</div><div class="card-sub">Assessment and management</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-red"><strong>If actively vomiting:</strong> Turn on side to prevent aspiration.</div>
+      <div class="sub-h">Suggested Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Haloperidol 0.5–1 mg PO/SC q6–8h</li>
+        <li>Metoclopramide 10 mg PO/SC q6h</li>
+        <li>Ondansetron 4–8 mg PO/ODT q8h (less effective for opioid-induced)</li>
+      </ul>
+      <div class="sub-h">Non-Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Head elevated 30–45° after meals/meds</li>
+        <li>Cool, well-ventilated room; dim lighting</li>
+        <li>Avoid strong odors</li>
+        <li>Small sips of clear liquids; ice chips; bland foods</li>
+        <li>Aromatherapy: peppermint, ginger, lemon</li>
+        <li>Acupressure P6 point (3 finger-widths below wrist, inner forearm)</li>
+        <li>Cool compress to forehead or back of neck</li>
+        <li>SL/SC/PR routes when oral intake limited</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8f5e9">💩</div>
+      <div><div class="card-title">Constipation</div><div class="card-sub">Prevention and treatment</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Prevention</div>
+      <ul class="criteria-list">
+        <li>Senna-S 1 tab PO BID</li>
+        <li>Docusate sodium 100 mg PO BID</li>
+      </ul>
+      <div class="sub-h">Treatment</div>
+      <ul class="criteria-list">
+        <li>Bisacodyl suppository or enema</li>
+        <li>Lactulose 15–30 mL PO daily</li>
+        <li>Magnesium citrate or PEG if severe</li>
+      </ul>
+      <div class="sub-h">Non-Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Upright position for toileting; commode preferred over bedpan</li>
+        <li>Warm beverages (prune juice, warm lemon water)</li>
+        <li>Fiber-rich foods if patient is mobile and hydrated</li>
+        <li>Abdominal massage: clockwise circular motion</li>
+        <li>Toileting time after meals (gastrocolic reflex)</li>
+        <li>Intervene if no BM in 48–72 hours</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fff3e0">🌡️</div>
+      <div><div class="card-title">Fever</div><div class="card-sub">Comfort-focused management</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">Suggested Pharmacologic</div>
+      <p class="body-text">Acetaminophen 500–1000 mg PO/PR q6h PRN</p>
+      <div class="sub-h">Non-Pharmacologic</div>
+      <ul class="criteria-list">
+        <li>Remove excess clothing/blankets; lightweight breathable sheets</li>
+        <li>Cool compress to forehead, neck, wrists</li>
+        <li>Tepid sponge bath (lukewarm — avoid cold or alcohol rubs)</li>
+        <li>Frequent small sips; ice chips; popsicles</li>
+        <li>Semi-upright positioning (30–45°)</li>
+        <li>Fan or open window</li>
+      </ul>
+      <div class="script-box">The fever is part of the body's natural response. We're using comfort measures to help them feel at ease.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fdecea">🩸</div>
+      <div><div class="card-title">Terminal Bleed</div><div class="card-sub">Massive hemorrhage protocol</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-red"><strong>Most common:</strong> Head/neck, lung, or GI cancers. Sudden profuse bleeding from mouth, nose, trach, or rectum.</div>
+      <div class="sub-h">Emergency Response</div>
+      <ul class="criteria-list check">
+        <li>DO NOT leave patient alone</li>
+        <li>Apply dark towels to bleeding site (absorbs discretely)</li>
+        <li>Administer Midazolam or Lorazepam 2 mg SL/SC</li>
+        <li>Administer Morphine 5–10 mg SC or SL</li>
+        <li>Gently guide family out if needed</li>
+        <li>Document time of event, comfort measures, death if occurred</li>
+        <li>Notify physician and supervisor immediately</li>
+      </ul>
+      <div class="script-box">We're focusing on keeping your loved one comfortable right now.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8eaf6">🩹</div>
+      <div><div class="card-title">Skin Breakdown / Pressure Injury</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list check">
+        <li>Reposition q2h</li>
+        <li>Keep skin clean and dry</li>
+        <li>Use pressure-relieving surfaces</li>
+        <li>Apply barrier creams</li>
+        <li>Treat infections topically or systemically as appropriate</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMMUNICATIONS ===== -->
+<div class="section" id="section-comms">
+  <div class="section-label">SBAR Communication</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:14px 16px">
+      <div class="sbar-row">
+        <div class="sbar-letter">S</div>
+        <div class="sbar-content">
+          <div class="sbar-label">Situation</div>
+          <div class="sbar-example">"I'm calling about [Patient A]. She's experiencing increased dyspnea and anxiety."</div>
+        </div>
+      </div>
+      <div class="sbar-row">
+        <div class="sbar-letter">B</div>
+        <div class="sbar-content">
+          <div class="sbar-label">Background</div>
+          <div class="sbar-example">"She has end-stage COPD. No medication changes in the last week."</div>
+        </div>
+      </div>
+      <div class="sbar-row">
+        <div class="sbar-letter">A</div>
+        <div class="sbar-content">
+          <div class="sbar-label">Assessment</div>
+          <div class="sbar-example">"O₂ sat 85% on 3L, RR 30, anxious, increased secretions."</div>
+        </div>
+      </div>
+      <div class="sbar-row">
+        <div class="sbar-letter">R</div>
+        <div class="sbar-content">
+          <div class="sbar-label">Recommendation</div>
+          <div class="sbar-example">"I recommend increasing morphine dose and adding atropine for secretions."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">SOAP Documentation</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:14px 16px">
+      <div class="sbar-row">
+        <div class="sbar-letter" style="background:var(--accent)">S</div>
+        <div class="sbar-content">
+          <div class="sbar-label">Subjective</div>
+          <div class="sbar-example">"Patient reports pain 6/10 and difficulty breathing at rest."</div>
+        </div>
+      </div>
+      <div class="sbar-row">
+        <div class="sbar-letter" style="background:var(--accent)">O</div>
+        <div class="sbar-content">
+          <div class="sbar-label">Objective</div>
+          <div class="sbar-example">"RR 28, anxious, using accessory muscles. PPS: 40%. No new wounds."</div>
+        </div>
+      </div>
+      <div class="sbar-row">
+        <div class="sbar-letter" style="background:var(--accent)">A</div>
+        <div class="sbar-content">
+          <div class="sbar-label">Assessment</div>
+          <div class="sbar-example">"Disease progression noted. Increased dyspnea consistent with end-stage COPD."</div>
+        </div>
+      </div>
+      <div class="sbar-row">
+        <div class="sbar-letter" style="background:var(--accent)">P</div>
+        <div class="sbar-content">
+          <div class="sbar-label">Plan</div>
+          <div class="sbar-example">"Administered morphine and lorazepam. Will follow up in 4 hours. Nurse and physician notified."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Charting Phrases</div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#d6eaf8">📝</div>
+      <div><div class="card-title">Decline Documentation</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li>"Patient requires increased assistance with transfers and ADLs."</li>
+        <li>"Weight loss of 5 lbs since last visit; decreased PO intake reported."</li>
+        <li>"Increased sleep and cognitive decline noted."</li>
+        <li>"TUG: [time] seconds with [device]. Patient required armrests to stand. [Gait description] noted."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#fdecea">⏱️</div>
+      <div><div class="card-title">Imminent Death Documentation</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li>"Patient non-responsive, Cheyne-Stokes respirations present, mottling noted."</li>
+        <li>"Family present, emotional support provided. RN reviewed dying process with caregivers."</li>
+        <li>"Administered Morphine 5 mg SL and repositioned; dyspnea improved."</li>
+        <li>"Terminal restlessness addressed with ABH gel and dimmed environment."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">Family Conversation Starters</div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <ul class="criteria-list">
+        <li>"What changes have you noticed since our last visit?"</li>
+        <li>"Let's talk about what comfort looks like for your loved one."</li>
+        <li>"These changes may be signs that time is becoming short."</li>
+        <li>"It's okay to shift our focus from fixing problems to making the time comfortable."</li>
+        <li>"We're here to support your family every step of the way."</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== IDG ===== -->
+<div class="section" id="section-idg">
+  <div class="section-label">RN Field Checklist</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <div id="rnChecklist"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Hospice Aide Visit Focus</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <div id="aideChecklist"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Social Work Focus Prompts</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <div id="swChecklist"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Chaplain / Spiritual Care</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <div id="chaplainChecklist"></div>
+      <div class="script-box">Many people find comfort in reflecting on their life — would you like to talk a little about that today?</div>
+    </div>
+  </div>
+
+  <div class="section-label">Visit Frequency Grid</div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <div style="overflow-x:auto">
+        <table class="ref-table">
+          <tr><th>Discipline</th><th>Stable</th><th>Declining</th><th>Active Dying</th></tr>
+          <tr><td>RN</td><td>1–2×/wk</td><td>2–3×/wk</td><td>Daily or more</td></tr>
+          <tr><td>SW</td><td>1–2×/mo</td><td>1×/wk PRN</td><td>On-call</td></tr>
+          <tr><td>Chaplain</td><td>1–2×/mo</td><td>Weekly PRN</td><td>Family support</td></tr>
+          <tr><td>Aide</td><td>2–5×/wk</td><td>5–7×/wk</td><td>7×/wk or BID</td></tr>
+          <tr><td>MD/NP</td><td>Cert PRN</td><td>Recert review</td><td>Consult available</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMPLIANCE ===== -->
+<div class="section" id="section-compliance">
+  <div class="section-label">Hand Hygiene</div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#e8f5e9">🤲</div>
+      <div><div class="card-title">Hand Hygiene Protocol</div><div class="card-sub">CDC/WHO guidelines • 42 CFR §418.60</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-h">When to Wash</div>
+      <ul class="criteria-list check">
+        <li>Before and after every patient contact</li>
+        <li>Before donning and after doffing gloves</li>
+        <li>After contact with bodily fluids, secretions, or excretions</li>
+        <li>Before handling medications or equipment</li>
+      </ul>
+      <div class="sub-h">Soap & Water Steps</div>
+      <ul class="criteria-list">
+        <li>Wet hands with warm water</li>
+        <li>Apply soap, lather ≥20 seconds — all surfaces including between fingers and under nails</li>
+        <li>Rinse thoroughly; dry with clean towel</li>
+        <li>Use towel to turn off faucet</li>
+      </ul>
+      <div class="sub-h">Hand Sanitizer (≥60% alcohol)</div>
+      <p class="body-text">Rub vigorously 15–20 seconds until dry. Not effective if hands are visibly soiled.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Infection Control</div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#d5f5e3">🦠</div>
+      <div><div class="card-title">Infection Control Reminders</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="ref-table">
+        <tr><th>Task</th><th>Best Practice</th></tr>
+        <tr><td>Wound care</td><td>Gloves + hand hygiene before/after</td></tr>
+        <tr><td>Foley care</td><td>Clean away from body; monitor for UTI signs</td></tr>
+        <tr><td>Linen handling</td><td>Do not shake; place directly in dirty bag</td></tr>
+        <tr><td>PPE</td><td>Gloves for all contact; mask/gown if exposure risk</td></tr>
+        <tr><td>Equipment</td><td>Wipe stethoscope, thermometer, tablet between patients</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">Nursing Bag Technique</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <ul class="criteria-list check">
+        <li>Place barrier (chux, plastic liner, paper towel) under bag before any surface contact</li>
+        <li>Never place on floor, patient bed, or kitchen counter</li>
+        <li>Keep clean and dirty compartments separate</li>
+        <li>Sanitize reusable equipment between visits</li>
+        <li>Portable sharps container — sealed and properly stored</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">Vital Signs Reference</div>
+  <div class="card">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <table class="ref-table">
+        <tr><th>Vital Sign</th><th>Normal</th><th>Hospice Note</th></tr>
+        <tr><td>Temp</td><td>97–99°F</td><td>Fever may signal infection or terminal event</td></tr>
+        <tr><td>Pulse</td><td>60–100 bpm</td><td>Elevated in pain, dyspnea, anxiety</td></tr>
+        <tr><td>Respirations</td><td>12–20 bpm</td><td>Cheyne-Stokes, apnea common near death</td></tr>
+        <tr><td>BP</td><td>100–140/60–90</td><td>May trend lower as patient declines</td></tr>
+        <tr><td>O₂ Sat</td><td>&gt;92%</td><td>&lt;90% without distress often tolerated in hospice</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label">Order Documentation Examples</div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="icon" style="background:#d6eaf8">📋</div>
+      <div><div class="card-title">Complete Medication Order</div><div class="card-sub">Per 42 CFR §418.56(c)</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="tool-block">
+        <p class="body-text" style="font-family:monospace; font-size:12px; line-height:1.6">
+          Morphine Sulfate oral solution 20 mg/mL, <strong>5 mg (0.25 mL)</strong> sublingually every 2 hours PRN for moderate to severe pain. May repeat q1h if pain ≥7.<br><br>
+          <strong>Indication:</strong> End-stage metastatic cancer with bone pain<br>
+          <strong>Route:</strong> Sublingual<br>
+          <strong>PRN Parameters:</strong> Pain rated ≥4 NRS<br>
+          <strong>Prescriber:</strong> Dr. [Name], MD
+        </p>
+      </div>
+      <div class="alert alert-green">✓ Drug • Dose • Route • Frequency • Indication • PRN parameters • Prescriber</div>
+      <div class="alert alert-red">✗ Incomplete: "Give morphine as needed for pain" — missing dose, route, frequency, PRN criteria, prescriber.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Aide Plan of Care Compliance</div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-body" style="display:block; padding:12px 14px">
+      <div class="sub-h">Per CMS 418.76 Requirements</div>
+      <ul class="criteria-list">
+        <li>POC must be written by RN, reviewed and updated every 14 days</li>
+        <li>POC must include frequency, tasks, and individualized instructions</li>
+        <li>Aide provides care exactly as ordered</li>
+        <li>Report to RN: refusal of care, skin breakdown, new symptoms</li>
+      </ul>
+      <div class="sub-h">Documentation Example</div>
+      <div class="tool-block">
+        <p class="body-text" style="font-size:12px; font-style:italic">"Per care plan: Assisted with full bed bath, peri-care, applied barrier cream to coccyx. Skin intact. No refusal of care. Patient in good spirits."</p>
+      </div>
+      <div class="alert alert-yellow">💡 Aide visits are frequently scrutinized during survey — ensure accurate visit times, clear documentation, and compliance with ordered frequencies.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  Luminary Hospice Pocket Toolkit · For clinical reference only<br>
+  Sources: CMS Medicare Coverage Database · 42 CFR §418 · NHPCO · CAPC
+</div>
+
+<script>
+var currentSection = 'home';
+var currentTitle = 'Luminary Hospice';
+var currentSub = 'Clinician Pocket Toolkit';
+var currentIcon = '🏥';
+
+function showSection(id, icon, title, sub) {
+  document.getElementById('section-' + currentSection).classList.remove('active');
+  document.getElementById('section-' + id).classList.add('active');
+  currentSection = id;
+  currentTitle = title;
+  currentSub = sub;
+  currentIcon = icon;
+  document.getElementById('headerTitle').textContent = title;
+  document.getElementById('headerSub').textContent = sub;
+  document.getElementById('headerIcon').textContent = icon;
+  if(id === 'home') {
+    document.getElementById('appHeader').classList.remove('has-back');
+  } else {
+    document.getElementById('appHeader').classList.add('has-back');
+  }
+  window.scrollTo(0,0);
+}
+
+function goHome() {
+  showSection('home', '🏥', 'Luminary Hospice', 'Clinician Pocket Toolkit');
+}
+
+function toggleCard(header) {
+  var card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+function calcOpioid() {
+  var dose = parseFloat(document.getElementById('opioidDose').value);
+  var select = document.getElementById('opioidDrug');
+  var factor = parseFloat(select.value);
+  var drugName = select.options[select.selectedIndex].text;
+  if(isNaN(dose) || dose <= 0) { alert('Please enter a valid dose'); return; }
+  var ome = Math.round(dose * factor * 10) / 10;
+  var resultEl = document.getElementById('opioidResult');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = dose + ' mg ' + drugName + ' = <strong>' + ome + ' mg OME (oral morphine equivalent)</strong>';
+}
+
+var esasItems = ['Pain','Tiredness','Drowsiness','Nausea','Depression','Anxiety','Appetite (poor)','Well-being (poor)','Shortness of Breath'];
+function buildESAS() {
+  var html = '';
+  esasItems.forEach(function(item, i) {
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)">';
+    html += '<span style="font-size:13px;min-width:100px;flex-shrink:0">' + item + '</span>';
+    html += '<input type="range" min="0" max="10" value="0" id="esas'+i+'" oninput="updateESAS()" style="flex:1">';
+    html += '<span style="font-size:13px;font-weight:600;min-width:16px;text-align:right" id="esasv'+i+'">0</span>';
+    html += '</div>';
+  });
+  html += '<button class="calc-btn" onclick="showESASTotal()" style="margin-top:10px">Show Total Score</button>';
+  document.getElementById('esasScores').innerHTML = html;
+}
+function updateESAS() {
+  esasItems.forEach(function(_, i) { document.getElementById('esasv'+i).textContent = document.getElementById('esas'+i).value; });
+}
+function showESASTotal() {
+  var total = 0;
+  esasItems.forEach(function(_, i) { total += parseInt(document.getElementById('esas'+i).value); });
+  var level = total<=30?'Mild-Moderate':total<=60?'Moderate-High':'High symptom burden';
+  var r = document.getElementById('esasResult');
+  r.style.display = 'block';
+  r.innerHTML = 'Total ESAS: <strong>' + total + '/90</strong> — ' + level;
+}
+
+var fallItems = [
+  {label:'History of Falls (past 3 months)', opts:[{t:'No',v:0},{t:'Yes',v:25}]},
+  {label:'Secondary Diagnosis (2+ active)', opts:[{t:'No',v:0},{t:'Yes',v:15}]},
+  {label:'Ambulatory Aid', opts:[{t:'None',v:0},{t:'Cane/Walker',v:15},{t:'Furniture',v:30}]},
+  {label:'IV/Heparin Lock', opts:[{t:'No',v:0},{t:'Yes',v:20}]},
+  {label:'Gait/Transferring', opts:[{t:'Normal',v:0},{t:'Weak',v:10},{t:'Impaired',v:20}]},
+  {label:'Mental Status', opts:[{t:'Aware of limits',v:0},{t:'Forgets limits',v:15}]}
+];
+function buildFallRisk() {
+  var html = '';
+  fallItems.forEach(function(item, i) {
+    html += '<div style="padding:8px 0;border-bottom:1px solid var(--border)">';
+    html += '<div style="font-size:13px;font-weight:500;margin-bottom:5px">' + item.label + '</div>';
+    html += '<div style="display:flex;gap:6px;flex-wrap:wrap">';
+    item.opts.forEach(function(opt, j) {
+      html += '<button onclick="selectFall('+i+','+j+',this)" data-val="'+opt.v+'" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:white;cursor:pointer;color:var(--text)">' + opt.t + ' (+' + opt.v + ')</button>';
+    });
+    html += '</div></div>';
+  });
+  html += '<button class="calc-btn" onclick="calcFall()" style="margin-top:10px">Calculate Fall Risk</button>';
+  document.getElementById('fallRiskForm').innerHTML = html;
+}
+var fallSelections = {};
+function selectFall(rowIdx, optIdx, btn) {
+  var row = btn.parentElement;
+  Array.from(row.children).forEach(function(b) { b.style.background='white'; b.style.color='var(--text)'; b.style.borderColor='var(--border)'; });
+  btn.style.background = 'var(--primary)';
+  btn.style.color = 'white';
+  btn.style.borderColor = 'var(--primary)';
+  fallSelections[rowIdx] = parseInt(btn.dataset.val);
+}
+function calcFall() {
+  if(Object.keys(fallSelections).length < fallItems.length) { alert('Please answer all categories'); return; }
+  var total = 0;
+  Object.values(fallSelections).forEach(function(v) { total += v; });
+  var level = total<=24?'Low Risk (0–24)':total<=44?'Moderate Risk (25–44)':'HIGH RISK (≥45) — Preventive Measures Required';
+  var color = total<=24?'var(--accent)':total<=44?'var(--warning)':'var(--danger)';
+  var r = document.getElementById('fallRiskResult');
+  r.style.display = 'block';
+  r.innerHTML = 'Fall Risk Score: <strong style="color:'+color+'">'+total+' — '+level+'</strong>';
+}
+
+var rnItems = ['Assess and document pain, dyspnea, anxiety, secretions','Update PPS / FAST / KPS scores','Review med changes and PRN effectiveness','Reconcile medication orders with caregiver-administered meds','Skin assessment and wound updates','Caregiver coping and understanding of plan of care','Document education provided and goals of care discussed'];
+var aideItems = ['Skin integrity (note any redness or breakdown)','Nutrition/hydration observations','Bowel and bladder status','Mobility, falls, or assist level changes','Emotional or behavioral changes','Report any changes to RN immediately'];
+var swItems = ['Patient and caregiver goals for comfort, location, legacy','Barriers to care: finances, home safety, burnout','Bereavement risk factors','Spiritual distress or unmet cultural needs','Review of DPOA, advance directives, funeral arrangements','Community resource referrals'];
+var chaplainItems = ['Spiritual/religious affiliations honored','Coping language used by patient/family','Existential distress or fear of dying','Cultural rituals or end-of-life practices','Offered prayers, readings, or music (if welcomed)'];
+var supplyItems = ['Comfort Kit Meds (check expiration)','Gloves, alcohol wipes','Oral syringes (1 mL, 5 mL)','SC needles and syringes','Medication administration log','Laminated family instructions','Biohazard bags','Foley catheter kit (if appropriate)','Mouth swabs','Incontinent supplies'];
+
+function buildChecklist(items, containerId, prefix) {
+  var html = '';
+  items.forEach(function(item, i) {
+    html += '<div class="checklist-item" id="'+prefix+'item'+i+'">';
+    html += '<div class="check-box" id="'+prefix+'cb'+i+'" onclick="toggleCheck(\''+prefix+'\','+i+')" role="checkbox" aria-checked="false" tabindex="0">&#8203;</div>';
+    html += '<span>'+item+'</span>';
+    html += '</div>';
+  });
+  document.getElementById(containerId).innerHTML = html;
+}
+function toggleCheck(prefix, i) {
+  var cb = document.getElementById(prefix+'cb'+i);
+  var row = document.getElementById(prefix+'item'+i);
+  if(cb.classList.contains('checked')) {
+    cb.classList.remove('checked');
+    cb.innerHTML = '&#8203;';
+    row.style.opacity = '1';
+  } else {
+    cb.classList.add('checked');
+    cb.innerHTML = '✓';
+    row.style.opacity = '0.5';
+  }
+}
+
+buildESAS();
+buildFallRisk();
+buildChecklist(rnItems, 'rnChecklist', 'rn');
+buildChecklist(aideItems, 'aideChecklist', 'aide');
+buildChecklist(swItems, 'swChecklist', 'sw');
+buildChecklist(chaplainItems, 'chaplainChecklist', 'chap');
+buildChecklist(supplyItems, 'suppliesChecklist', 'sup');
+</script>
+</body>
+</html>
