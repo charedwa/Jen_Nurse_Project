@@ -74,8 +74,8 @@
         html +=
           '<button class="tile emergency" data-section="' + section.id + '">' +
             '<span class="tile-icon">' + icon + "</span>" +
-            "<span>" +
-              '<span class="tile-name">' + esc(section.title) + "</span>" +
+            '<span class="tile-text">' +
+              '<span class="tile-name">' + esc(section.title) + ":</span> " +
               '<span class="tile-sub">' + esc(section.description) + "</span>" +
             "</span>" +
             '<span class="tile-arrow" aria-hidden="true">›</span>' +
@@ -253,7 +253,15 @@
     // delegate tile + result + card-header clicks
     document.body.addEventListener("click", function (e) {
       var tile = e.target.closest ? e.target.closest("[data-section]") : null;
-      if (tile && tile.classList.contains("tile")) { showSection(tile.getAttribute("data-section")); return; }
+      if (tile && tile.classList.contains("tile")) {
+        // brief selection highlight before navigating, for tap feedback
+        tile.classList.add("tile-selected");
+        setTimeout(function () {
+          tile.classList.remove("tile-selected");
+          showSection(tile.getAttribute("data-section"));
+        }, 160);
+        return;
+      }
       var result = e.target.closest ? e.target.closest(".result-card") : null;
       if (result) { openCardInSection(result.getAttribute("data-section"), result.getAttribute("data-card")); return; }
       var head = e.target.closest ? e.target.closest(".card-header") : null;

@@ -1092,6 +1092,7 @@ window.hospiceToolkit = [
         sourcePages: [1],
         contentHtml:
           '<p class="body-text">This toolkit is adapted from provided hospice clinician pocket toolkit materials for mobile reference. It is intended for clinician convenience and does not replace agency policy, physician orders, individualized clinical judgment, or current documentation requirements.</p>' +
+          '<p class="body-text">Clinical content developed by <strong>Jennifer Edwards, BSN</strong>.</p>' +
           '<div class="alert alert-blue">For clinician reference only. Follow agency policy, physician orders, current MAR, and clinical judgment.</div>'
       },
       {

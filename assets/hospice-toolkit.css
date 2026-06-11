@@ -179,6 +179,17 @@ body {
 }
 .tile:active { transform: scale(0.97); box-shadow: 0 1px 1px rgba(16,39,48,0.04); }
 .tile:focus-visible { outline: 2px solid var(--primary-light); outline-offset: 2px; }
+/* brief selection flash on tap (JS adds .tile-selected before navigating) */
+.tile.tile-selected {
+  background: var(--primary-pale);
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(28,138,166,0.35);
+  transform: scale(0.97);
+}
+.tile.emergency.tile-selected {
+  background: linear-gradient(135deg, #a8332f 0%, var(--danger) 70%);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.65);
+}
 .tile .tile-icon {
   font-size: 22px; width: 42px; height: 42px;
   border-radius: 11px;
@@ -198,8 +209,9 @@ body {
   box-shadow: 0 2px 8px rgba(155,44,44,0.22);
 }
 .tile.emergency .tile-icon { background: rgba(255,255,255,0.18); }
-.tile.emergency .tile-name { color: var(--white); font-size: 15px; }
-.tile.emergency .tile-sub { color: rgba(255,255,255,0.85); }
+.tile.emergency .tile-text { flex: 1; line-height: 1.35; }
+.tile.emergency .tile-name { display: inline; color: var(--white); font-size: 15px; }
+.tile.emergency .tile-sub { display: inline; color: rgba(255,255,255,0.85); font-size: 13px; }
 .tile.emergency .tile-arrow { margin-left: auto; font-size: 20px; opacity: 0.85; }
 
 /* ---------- SECTION VIEW ---------- */
