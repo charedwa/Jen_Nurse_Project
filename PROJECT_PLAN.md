@@ -41,16 +41,21 @@ dose values that differ from the PDF.
 
 ## Session 1 — Content extraction & verification
 
-- [ ] Extract all PDF text (pypdf). Flag any pages where extraction is garbled for manual
-      transcription.
-- [ ] Build `assets/hospice-toolkit-data.js`: one structured data file, 10 sections →
+- [x] Extract all PDF text (pypdf). Flag any pages where extraction is garbled for manual
+      transcription. *(82 pp extracted cleanly; only decorative emoji/icon glyphs were garbled —
+      no clinical text affected. Page 82 blank as expected.)*
+- [x] Build `assets/hospice-toolkit-data.js`: one structured data file, 10 sections →
       cards with `id`, `title`, `tags` (search synonyms of existing terms only),
-      `contentHtml`, and `sourcePages` (PDF page numbers for traceability).
-- [ ] Content rules: PDF wording preserved; reorganization/heading-shortening allowed;
+      `contentHtml`, and `sourcePages` (PDF page numbers for traceability). *(10 sections,
+      58 cards; validates as JS; every card has sourcePages.)*
+- [x] Content rules: PDF wording preserved; reorganization/heading-shortening allowed;
       NO new clinical content, doses, links, or resources.
-- [ ] Cross-check every prototype card against the PDF. Write `REVIEW_NOTES.md` listing
+- [x] Cross-check every prototype card against the PDF. Write `REVIEW_NOTES.md` listing
       every item that is not traceable, plus any dose discrepancies, for Chad/Jen review.
-- [ ] Commit and push.
+      *(See `REVIEW_NOTES.md`. Note: TUG and NYHA — pre-flagged here as "not yet traced" — are
+      in fact in the PDF (pp. 21–22 and p. 28) and were included; the opioid calculator and ESAS
+      total-score bands remain excluded.)*
+- [x] Commit and push.
 
 ## Session 2 — Build the mobile page
 
