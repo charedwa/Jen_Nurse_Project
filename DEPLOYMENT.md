@@ -44,6 +44,46 @@ previews and for GitHub Pages from the `/docs` folder. It is generated from the 
   self-contained, it works inside one HTML block. Watch for CMS CSS bleed; the page's styles are
   scoped under common class names but not namespaced — test in a staging page first.
 
+### ★ Careberry.org via Wix (the chosen host) — embed an iframe
+
+Wix can't run a multi-file static app inline, so the reliable pattern is: **host the page on a
+stable URL, then embed that URL in a Wix page as an iframe.** The page already uses an anchor with
+`target="_top"` for the feedback email, so the "Improve This Toolkit" mailto still works from inside
+the Wix iframe.
+
+**Step 1 — get a stable URL (GitHub Pages, free now that the repo is public):**
+1. GitHub repo ▸ **Settings ▸ Pages**.
+2. **Source:** Deploy from a branch ▸ **Branch:** `main` ▸ **Folder:** `/docs` ▸ **Save**.
+3. After ~1 minute the page is live at **`https://charedwa.github.io/Jen_Nurse_Project/`**.
+
+**Step 2 — build the Wix page:**
+1. In the Wix Editor, **Pages ▸ + Add Page ▸ Blank**. Name it *Hospice Nurse Pocket Toolkit*.
+2. **SEO (Wix page settings ▸ SEO):** URL slug `hospice-nurse-toolkit`; title
+   `Hospice Nurse Pocket Toolkit | Careberry`; meta description (from CLAUDE.md):
+   *"A mobile-friendly hospice nurse quick-reference guide for eligibility, assessment tools,
+   symptom management, communication, documentation, IDG preparation, and field checklists."*
+   (When embedded, the **Wix page's** SEO applies — not the iframe's — so set it here.)
+3. **Add ▸ Embed Code ▸ Embed a Site** (the iframe element). In its settings choose **Website
+   address** and paste `https://charedwa.github.io/Jen_Nurse_Project/`.
+4. Stretch the element **full-width**; give it a tall height (e.g. 1400–2000px) so the toolkit has
+   room — the inner page scrolls on its own. Hide the page's side margins for an app-like feel.
+5. **Switch to the Wix Mobile editor** (phone icon) and confirm the embed fills the screen width and
+   is set to show on mobile. This is a mobile-first tool — mobile layout is the priority.
+6. **Publish.** Confirm it loads at `careberry.org/hospice-nurse-toolkit` (custom domain requires a
+   paid Wix plan, which careberry.org presumably already has).
+
+**Notes / gotchas:**
+- **Feedback email:** after publishing, tap *Improve This Toolkit ▸ Send to Careberry* on a phone and
+  confirm your mail app opens addressed to `support@careberry.org`. If Wix's iframe sandbox blocks the
+  mailto, the on-screen note still tells the user to email `support@careberry.org` directly. (If you'd
+  prefer a no-mail-app submission later, we can swap the mailto for a hosted form endpoint — e.g.
+  Formspree or a Wix Form placed next to the embed — that POSTs straight to your inbox.)
+- **Updates:** edit the source, push to `main`, and GitHub Pages + the Wix embed update automatically
+  (no Wix change needed).
+- Alternative to GitHub Pages for Step 1: any static host (Netlify/Vercel/Cloudflare Pages) or even
+  uploading `docs/index.html` to your own web space — anything that yields an `https://…/index.html`
+  URL works in the Wix iframe.
+
 ### C. GitHub Pages (good for a staging/preview URL or a subdomain)
 - Repo ▸ **Settings ▸ Pages** ▸ Deploy from branch ▸ folder **`/docs`** → serves only the toolkit
   page (keeps `Prior_data/` PDFs unexposed).
