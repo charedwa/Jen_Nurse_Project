@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Hospice Nurse Pocket Toolkit | Careberry</title>
+  <meta name="description" content="A mobile-friendly hospice nurse quick-reference guide for eligibility, assessment tools, symptom management, communication, documentation, IDG preparation, and field checklists.">
+  <meta name="theme-color" content="#13657a">
+
+  <!-- Social preview (optional, no external assets) -->
+  <meta property="og:title" content="Hospice Nurse Pocket Toolkit | Careberry">
+  <meta property="og:description" content="Mobile quick reference for hospice field care: eligibility, assessment tools, symptom management, documentation, IDG, and field checklists.">
+  <meta property="og:type" content="website">
+
+  <!-- App-like behavior on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Hospice Toolkit">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2313657a'/><text y='68' x='50' text-anchor='middle' font-size='52'>🩺</text></svg>">
+
+  <link rel="stylesheet" href="../assets/hospice-toolkit.css">
+</head>
+<body>
+<div id="app">
+
+  <div class="topbar">
+    <header class="app-header" id="appHeader">
+      <button class="back-btn" id="backBtn" type="button" aria-label="Back to home">←</button>
+      <div class="logo-mark" aria-hidden="true">🩺</div>
+      <div class="header-text">
+        <div class="brand-chip">Careberry</div>
+        <h1 id="headerTitle">Hospice Nurse Pocket Toolkit</h1>
+        <p class="subtitle" id="headerSub">Mobile quick reference for hospice field care</p>
+      </div>
+    </header>
+
+    <div class="search-bar">
+      <div class="search-wrap">
+        <label class="visually-hidden" for="searchInput">Search the toolkit</label>
+        <input id="searchInput" type="search" inputmode="search" autocomplete="off"
+               placeholder="Search symptom, diagnosis, med, scale…" aria-label="Search the toolkit">
+        <button class="clear-btn" id="clearBtn" type="button" aria-label="Clear search">×</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live search results (replaces the active view while typing) -->
+  <div class="search-results" id="searchResults" role="region" aria-label="Search results" aria-live="polite"></div>
+
+  <!-- HOME -->
+  <div class="view active" id="homeView">
+    <div class="safety-note">
+      <strong>For clinician reference only.</strong>
+      Follow agency policy, physician orders, current MAR, and clinical judgment. This tool does not
+      replace hospice medical direction or individualized care planning.
+    </div>
+    <div class="section-label">Tap a section</div>
+    <div class="home-grid" id="homeGrid"></div>
+  </div>
+
+  <!-- All section views are rendered here from the data file -->
+  <div id="sections"></div>
+
+  <footer class="footer">
+    Careberry · Hospice Nurse Pocket Toolkit · For clinician reference only.<br>
+    Adapted from provided hospice clinician pocket toolkit materials. Does not replace agency policy,
+    physician orders, individualized clinical judgment, or current documentation requirements.
+  </footer>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Back to top">↑</button>
+</div>
+
+<script src="../assets/hospice-toolkit-data.js"></script>
+<script src="../assets/hospice-toolkit.js"></script>
+</body>
+</html>

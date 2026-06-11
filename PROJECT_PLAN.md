@@ -59,25 +59,33 @@ dose values that differ from the PDF.
 
 ## Session 2 — Build the mobile page
 
-- [ ] Create `hospice-nurse-toolkit/index.html`, `assets/hospice-toolkit.css`,
+- [x] Create `hospice-nurse-toolkit/index.html`, `assets/hospice-toolkit.css`,
       `assets/hospice-toolkit.js`. Static, no framework, system font stack.
-- [ ] Header: Careberry branding, title "Hospice Nurse Pocket Toolkit", subtitle
-      "Mobile quick reference for hospice field care", sticky on scroll.
-- [ ] Safety note near top: "For clinician reference only. Follow agency policy,
+- [x] Header: Careberry branding, title "Hospice Nurse Pocket Toolkit", subtitle
+      "Mobile quick reference for hospice field care", sticky on scroll. *(Header + search in
+      a sticky `.topbar`; all "Luminary" branding removed — verified absent from build.)*
+- [x] Safety note near top: "For clinician reference only. Follow agency policy,
       physician orders, current MAR, and clinical judgment." Repeat in emergency and
-      medication sections.
-- [ ] Working instant client-side search: indexes section names, card titles, tags, body
+      medication sections. *(Home safety banner + alert-red reminders inside emergency/med cards.)*
+- [x] Working instant client-side search: indexes section names, card titles, tags, body
       text; shows section + card + preview; tap to jump; match highlighting; clear button.
-- [ ] Home grid of 10 quick-access tiles; emergency section styled with muted red and
-      easiest to reach.
-- [ ] Accordion cards: ARIA (`aria-expanded`, `aria-controls`), keyboard accessible,
-      ≥44px tap targets.
-- [ ] Tables mobile-safe (stacked cards or horizontal scroll with visible cue).
-- [ ] SEO: title "Hospice Nurse Pocket Toolkit | Careberry" + meta description from
-      CLAUDE.md. No PHI fields anywhere.
-- [ ] Render content ONLY from `assets/hospice-toolkit-data.js`. Items in
+- [x] Home grid of 10 quick-access tiles; emergency section styled with muted red and
+      easiest to reach. *(Emergency tile is a full-width red banner, first in the grid.)*
+- [x] Accordion cards: ARIA (`aria-expanded`, `aria-controls`), keyboard accessible,
+      ≥44px tap targets. *(Headers are real `<button>`s; `--tap: 48px` minimum.)*
+- [x] Tables mobile-safe (stacked cards or horizontal scroll with visible cue).
+      *(Tables auto-wrapped in `.table-scroll` with a "Scroll table sideways →" cue.)*
+- [x] SEO: title "Hospice Nurse Pocket Toolkit | Careberry" + meta description from
+      CLAUDE.md. No PHI fields anywhere. *(Only input on the page is the search box — verified.)*
+- [x] Render content ONLY from `assets/hospice-toolkit-data.js`. Items in
       `REVIEW_NOTES.md` stay excluded unless Chad has approved them.
-- [ ] Commit and push.
+- [x] Commit and push.
+
+> Verified with a headless (jsdom) interaction suite: 34/34 checks pass — 10 tiles, 10 section
+> views, 58 accordion cards with ARIA, table wrapping, source-page attribution on every card,
+> tile/back navigation, accordion toggle, search for dyspnea/morphine/FAST/SBAR/recert/comfort
+> kit/braden/seizure, match highlighting, result→card jump, clear button, no-results path, and
+> no PHI fields.
 
 ## Session 3 — QA & launch prep
 
