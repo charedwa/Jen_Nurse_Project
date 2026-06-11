@@ -114,22 +114,35 @@ the Wix iframe.
 
 ## Regenerating the single-file `docs/index.html`
 
-After editing any of the four canonical files, rebuild the inlined copy so the preview/Pages
-version stays in sync:
+After editing any of the four canonical files, rebuild the inlined PWA copy so the preview / Pages /
+installable app stays in sync:
 
 ```bash
-node -e '
-const fs=require("fs");
-let h=fs.readFileSync("hospice-nurse-toolkit/index.html","utf8");
-const css=fs.readFileSync("assets/hospice-toolkit.css","utf8");
-const data=fs.readFileSync("assets/hospice-toolkit-data.js","utf8");
-const app=fs.readFileSync("assets/hospice-toolkit.js","utf8");
-h=h.replace(/<link rel="stylesheet" href="\.\.\/assets\/hospice-toolkit\.css">/,()=>"<style>\n"+css+"\n</style>");
-h=h.replace(/<script src="\.\.\/assets\/hospice-toolkit-data\.js"><\/script>/,()=>"<script>\n"+data+"\n</script>");
-h=h.replace(/<script src="\.\.\/assets\/hospice-toolkit\.js"><\/script>/,()=>"<script>\n"+app+"\n</script>");
-fs.writeFileSync("docs/index.html",h);
-'
+node build-docs.js
 ```
 
-(Function-form replacements are used on purpose — a `$&` inside the JS would otherwise be treated as
-a special replacement token and corrupt the bundle.)
+`build-docs.js` inlines the CSS + data + app JS into `docs/index.html` **and** wires the PWA bits
+(web-manifest link, real `apple-touch-icon`, and the service-worker registration). Do not hand-edit
+`docs/index.html`. (Function-form replacements are used on purpose — a `$&` inside the JS would
+otherwise be treated as a special replacement token and corrupt the bundle.)
+
+## Offline / install-to-home-screen (PWA)
+
+The Pages build is an installable, offline-capable web app. Files (all in `docs/`):
+
+- `manifest.webmanifest` — app name, icons, standalone display, theme color.
+- `sw.js` — service worker; caches the self-contained `index.html` + icons so the toolkit opens
+  with no signal (network-first for the page, cache fallback offline).
+- `icon-192.png`, `icon-512.png`, `icon-180.png` — app icons (Careberry stethoscope mark).
+
+**Install (each nurse, once, ~10 s):** open the toolkit URL in **Safari** → **Share** →
+**Add to Home Screen** → **Add**. It then launches full-screen like an app and works offline.
+
+> Install the **direct toolkit URL** (the GitHub Pages URL, or a branded subdomain like
+> `toolkit.careberry.org` pointed at Pages) — NOT the Wix-embedded page. Add-to-Home-Screen and
+> offline only work on the direct page; the Wix iframe is for website browsing.
+
+**Updating the app:** bump `CACHE` in `sw.js` (e.g. `-v2`) and run `node build-docs.js` before
+pushing, so installed phones pull the new version on next online launch.
+
+
