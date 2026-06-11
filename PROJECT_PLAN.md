@@ -89,19 +89,36 @@ dose values that differ from the PDF.
 
 ## Session 3 — QA & launch prep
 
-- [ ] Internal review checklist (CLAUDE.md Step 6): test at 360px and 390px widths;
+- [x] Internal review checklist (CLAUDE.md Step 6): test at 360px and 390px widths;
       search spot checks ("dyspnea", "morphine", "FAST", "SBAR", "recert", "comfort kit");
-      accordions open/close; disclaimer visible; meta tags present.
-- [ ] Traceability audit: every card's `sourcePages` checked against the PDF.
-- [ ] Write `CLINICAL_REVIEW_GUIDE.md` for Jen: doses/equianalgesic table, eligibility
+      accordions open/close; disclaimer visible; meta tags present. *(Automated QA: 29/29 pass —
+      meta/SEO, disclaimer + emergency MAR reminder, 12 search terms w/ highlighting, accordion
+      open/close, responsive rules incl. 360px→1-col grid + 48px tap targets, no PHI fields.)*
+- [x] Traceability audit: every card's `sourcePages` checked against the PDF. *(Token-overlap
+      audit of all 58 cards vs. cited pages. Found and fixed 2 page-range gaps —
+      `comfort-kit-seizure` 58→58,59 and `sym-terminal-bleed` 53,54→53,54,55; both now 100%.
+      Remaining mismatches were PDF extraction/hyphenation artifacts + allowed UI/disclaimer text.)*
+- [x] Write `CLINICAL_REVIEW_GUIDE.md` for Jen: doses/equianalgesic table, eligibility
       wording, emergency quick reference, charting phrases, anything to remove or restrict.
-- [ ] Deployment prep once Chad identifies the Careberry.org host (page is host-agnostic;
+- [x] Deployment prep once Chad identifies the Careberry.org host (page is host-agnostic;
       options: existing host upload/embed, GitHub Pages on a subdomain, Netlify/Vercel).
+      *(See `DEPLOYMENT.md` — host options A–D, pre-launch gate, single-file regen steps.)*
 - [ ] Do NOT publish or open a PR without Chad's go-ahead. Clinical review by Jen is
-      required before launch.
+      required before launch. *(Intentionally left open — this gate stays unchecked until Chad
+      approves and Jen signs off.)*
 
 ---
 
 ## Status log
 
 - 2026-06-11 — Repo organized: source documents moved to `Prior_data/`, roadmap created.
+- 2026-06-11 — Session 1: extracted PDF (82 pp), built `assets/hospice-toolkit-data.js`
+  (10 sections, 58 cards, every card tagged with source pages), wrote `REVIEW_NOTES.md`
+  (prototype cross-check; confirmed TUG p.21–22 and NYHA p.28 are in the PDF).
+- 2026-06-11 — Session 2: built the mobile page (`hospice-nurse-toolkit/index.html`,
+  `assets/hospice-toolkit.css`, `assets/hospice-toolkit.js`); Careberry-branded, instant search,
+  accessible accordions, mobile-safe tables. Verified with a jsdom interaction suite (34/34).
+- 2026-06-11 — Session 3: traceability audit (fixed 2 page-range gaps), internal QA (29/29),
+  wrote `CLINICAL_REVIEW_GUIDE.md` for Jen and `DEPLOYMENT.md`. Added self-contained
+  `docs/index.html` for preview/GitHub Pages. **Not published — awaiting Chad's go-ahead and
+  Jen's clinical sign-off.**
