@@ -15,7 +15,7 @@
   var ICONS = {
     emergency: "🚨", eligibility: "📋", assessment: "📊", symptoms: "💊",
     comms: "🗣️", idg: "👥", compliance: "✅", supplies: "🧰",
-    family: "💬", sources: "ℹ️"
+    family: "💬", sources: "ℹ️", improve: "✍️"
   };
   // Soft tint behind each tile icon, keyed by section tone.
   var TONE_TINT = {
@@ -106,13 +106,14 @@
         var pages = (card.sourcePages && card.sourcePages.length)
           ? '<p class="muted" style="margin-top:10px">Source: PDF p. ' + card.sourcePages.join(", ") + "</p>"
           : "";
+        var isOpen = card.open === true;
         html +=
           '<div class="card" id="card-' + card.id + '">' +
-            '<button class="card-header" id="' + headId + '" aria-expanded="false" aria-controls="' + bodyId + '">' +
+            '<button class="card-header" id="' + headId + '" aria-expanded="' + (isOpen ? "true" : "false") + '" aria-controls="' + bodyId + '">' +
               '<span class="card-title">' + esc(card.title) + "</span>" +
               '<span class="chevron" aria-hidden="true">▾</span>' +
             "</button>" +
-            '<div class="card-body" id="' + bodyId + '" role="region" aria-labelledby="' + headId + '" hidden>' +
+            '<div class="card-body" id="' + bodyId + '" role="region" aria-labelledby="' + headId + '"' + (isOpen ? "" : " hidden") + ">" +
               makeTablesScrollable(card.contentHtml) + pages +
             "</div>" +
           "</div>";
@@ -246,12 +247,58 @@
     else { var v = el("view-" + currentSection); if (v) v.classList.add("active"); }
   }
 
+  /* ---------- feedback form (Improve This Toolkit) ---------- */
+  var FEEDBACK_EMAIL = "support@careberry.org";
+  function fieldVal(id) { var x = el(id); return x ? x.value.trim() : ""; }
+  function setFbStatus(msg, isError) {
+    var s = el("fbStatus");
+    if (!s) return;
+    s.textContent = msg;
+    s.style.color = isError ? "var(--danger)" : "var(--text-muted)";
+  }
+  function submitFeedback() {
+    var what = fieldVal("fbWhat");
+    if (!what) {
+      var w = el("fbWhat"); if (w) w.focus();
+      setFbStatus("Please describe what should be corrected or added.", true);
+      return;
+    }
+    var body =
+      "Suggested correction or addition:\n" + what + "\n\n" +
+      "Section / topic: " + fieldVal("fbSection") + "\n" +
+      "Supporting evidence / link: " + fieldVal("fbLink") + "\n\n" +
+      "Submitted by:\n" +
+      "Name: " + fieldVal("fbName") + "\n" +
+      "Phone: " + fieldVal("fbPhone") + "\n" +
+      "Email: " + fieldVal("fbEmail") + "\n\n" +
+      "Sent from the Careberry Hospice Nurse Pocket Toolkit.";
+    var url = "mailto:" + FEEDBACK_EMAIL +
+      "?subject=" + encodeURIComponent("Hospice Nurse Pocket Toolkit — feedback") +
+      "&body=" + encodeURIComponent(body);
+    setFbStatus("Opening your email app… if nothing happens, email " + FEEDBACK_EMAIL + " directly.", false);
+    // Use an anchor with target=_top — works when the page is embedded in an
+    // iframe (e.g. on a Wix page), where a bare window.location can be blocked.
+    var a = el("fbMailto");
+    if (!a) {
+      a = document.createElement("a");
+      a.id = "fbMailto";
+      a.target = "_top";
+      a.rel = "noopener";
+      a.style.display = "none";
+      document.body.appendChild(a);
+    }
+    a.href = url;
+    try { a.click(); } catch (err) { try { window.top.location.href = url; } catch (e2) { /* ignore */ } }
+  }
+
   /* ---------- events ---------- */
   function wire() {
     el("backBtn").addEventListener("click", goHome);
 
     // delegate tile + result + card-header clicks
     document.body.addEventListener("click", function (e) {
+      var fb = e.target.closest ? e.target.closest("#fbSubmit") : null;
+      if (fb) { submitFeedback(); return; }
       var tile = e.target.closest ? e.target.closest("[data-section]") : null;
       if (tile && tile.classList.contains("tile")) {
         // brief selection highlight before navigating, for tap feedback

@@ -1118,6 +1118,45 @@ window.hospiceToolkit = [
           '<ul class="criteria-list"><li>CDC Hand Hygiene Guidelines</li><li>WHO Hand Hygiene</li><li>42 CFR §418.60</li><li>42 CFR §418.56(c)</li><li>nhpco.org</li><li>advancingexpertcare.org</li></ul>'
       }
     ]
+  },
+
+  /* ============================================================
+   * SECTION 11 — IMPROVE THIS TOOLKIT (feedback)
+   * Not from the PDF. A submitter feedback form that composes an
+   * email to support@careberry.org via the device's mail app.
+   * Collects the submitter's own contact info only — NOT patient
+   * data; the form warns against entering PHI and stores nothing.
+   * ============================================================ */
+  {
+    id: "improve",
+    title: "Improve This Toolkit",
+    description: "Suggest a correction or addition",
+    tone: "accent",
+    cards: [
+      {
+        id: "improve-form",
+        title: "Suggest a Correction or Addition",
+        tags: ["improve", "feedback", "suggest", "correction", "report", "error", "contact", "evidence"],
+        sourcePages: [],
+        open: true,
+        contentHtml:
+          '<p class="body-text">Spotted something that looks wrong, out of date, or missing? Tell us and we’ll route it to clinical review. This sends an email to the Careberry team — nothing is stored on this page.</p>' +
+          '<div class="alert alert-yellow"><strong>Do not include patient names or any protected health information (PHI).</strong> Share only the clinical point and a source.</div>' +
+          '<div class="form-field"><label for="fbWhat">What seems wrong, or what should be added? <span class="req">*</span></label>' +
+          '<textarea id="fbWhat" rows="4" placeholder="Describe the correction or addition…"></textarea></div>' +
+          '<div class="form-field"><label for="fbSection">Which section / topic?</label>' +
+          '<input id="fbSection" type="text" placeholder="e.g., Symptom Management → Dyspnea"></div>' +
+          '<div class="form-field"><label for="fbLink">Link to supporting evidence (policy, guideline, source)</label>' +
+          '<input id="fbLink" type="url" inputmode="url" placeholder="https://…"></div>' +
+          '<div class="form-row">' +
+          '<div class="form-field"><label for="fbName">Your name</label><input id="fbName" type="text" autocomplete="name"></div>' +
+          '<div class="form-field"><label for="fbPhone">Phone</label><input id="fbPhone" type="tel" inputmode="tel" autocomplete="tel"></div>' +
+          '</div>' +
+          '<div class="form-field"><label for="fbEmail">Email</label><input id="fbEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com"></div>' +
+          '<button class="form-submit" id="fbSubmit" type="button">Send to Careberry</button>' +
+          '<p class="form-note" id="fbStatus" role="status" aria-live="polite">Opens your email app addressed to support@careberry.org. Nothing is stored on this page.</p>'
+      }
+    ]
   }
 
 ];
